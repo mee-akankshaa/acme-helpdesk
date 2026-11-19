@@ -726,7 +726,7 @@
     /* =========================================================
        CONFIG
        ========================================================= */
-    const BACKEND_API_URL = "http://localhost:4100/tickets"; // change to your deployed backend
+    const BACKEND_API_URL = (location.hostname === "localhost" || location.hostname === "127.0.0.1") ? "http://localhost:4100/tickets" : "https://acme-helpdesk-api.onrender.com/tickets";
 
     const CATEGORIES = {
       account: {

@@ -1,0 +1,26 @@
+# Render Blueprint: free API + free Postgres. The HTML form is hosted on GitHub Pages.
+databases:
+  - name: acme-helpdesk-db
+    plan: free
+    databaseName: helpdesk
+    user: helpdesk
+services:
+  - type: web
+    name: acme-helpdesk-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci --include=dev && npx prisma generate && npm run build && npx prisma migrate deploy
+    startCommand: npm run start
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: acme-helpdesk-db
+          property: connectionString
+      - key: SUPPORT_API_KEY
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: NODE_ENV
+        value: production
